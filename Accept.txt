@@ -1,0 +1,27 @@
+/**##### ##     ## ######## ########     ###    ##       ########  
+##       ###   ### ##       ##     ##   ## ##   ##       ##     ## 
+##       #### #### ##       ##     ##  ##   ##  ##       ##     ## 
+######   ## ### ## ######   ########  ##     ## ##       ##     ## 
+##       ##     ## ##       ##   ##   ######### ##       ##     ## 
+##       ##     ## ##       ##    ##  ##     ## ##       ##     ## 
+######## ##     ## ######## ##     ## ##     ## ######## ########  
+*///==============================================================
+
+const user        =   ""
+const token       =   ""
+const deploy      =   ""
+
+//================================================================
+/**                    DO NOT EDIT BELOW                        */
+//================================================================
+
+//PLAYER AND CODE AUTHOR USERNAME
+  const player = {"x-client":"15d53bbe-a252-4f43-b401-94ddea74f7eb" + "-" + "Auto-Accept Quests for Emerald Dream",'x-api-user':user,'x-api-key':token}
+
+//CREATE A NEW WEEBHOOK
+  function INSTALL_ONCE() {UrlFetchApp.fetch(`https://habitica.com/api/v3/user/webhook`,{method:"post",headers:player,contentType:"application/json",payload:JSON.stringify({"url": deploy,"type": "questActivity","options" : {"questStarted":  false,"questFinished": false,"questInvited":  true}})})}
+
+//ACCEPT QUEST SCRIPT
+  function doPost() {UrlFetchApp.fetch(`https://habitica.com/api/v3/groups/party/quests/accept`,{method:"post",headers:player,timeout: 30000})}
+
+//================================================================
