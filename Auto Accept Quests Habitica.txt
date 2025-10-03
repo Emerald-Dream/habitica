@@ -1,0 +1,27 @@
+/**##### ##     ## ######## ########     ###    ##       ########  
+##       ###   ### ##       ##     ##   ## ##   ##       ##     ## 
+##       #### #### ##       ##     ##  ##   ##  ##       ##     ## 
+######   ## ### ## ######   ########  ##     ## ##       ##     ## 
+##       ##     ## ##       ##   ##   ######### ##       ##     ## 
+##       ##     ## ##       ##    ##  ##     ## ##       ##     ## 
+######## ##     ## ######## ##     ## ##     ## ######## ########  
+*///==============================================================
+
+const user        =   ""
+const token       =   ""
+const deploy      =   ""
+
+//================================================================
+/**                    DO NOT EDIT BELOW                        */
+//================================================================
+
+//PLAYER AND CODE AUTHOR USERNAME
+  const player = {"x-client":"15d53bbe-a252-4f43-b401-94ddea74f7eb" + "-" + "Auto-Accept Quests for Emerald Dream",'x-api-user':user,'x-api-key':token};api=`https://habitica.com/api/v3`
+
+//CREATE A NEW WEBHOOK
+  function INSTALL_ONCE() {UrlFetchApp.fetch(`${api}/user/webhook`,{method:"post",headers:player,contentType:"application/json",payload:JSON.stringify({"url": deploy,label: 'Emerald',"type": "questActivity","options" : {"questStarted":false,"questFinished":false,"questInvited":true}})})}
+
+//ACCEPT QUEST SCRIPT
+  function doPost(e) {if(JSON.parse(e.postData.contents).group.name === "Emerald Dream"){UrlFetchApp.fetch(api+"/groups/party/quests/accept",{method:"post",headers:player,timeout: 30000})} else{UrlFetchApp.fetch(`${api}/user/webhook/${JSON.parse(UrlFetchApp.fetch(`${api}/user/webhook`,{headers:player}).getContentText()).data.find(d=>d.type=="questActivity")?.id}`,{method:"delete",headers:player})}}
+
+//================================================================
