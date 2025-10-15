@@ -19,7 +19,7 @@ const only_at_hour     =    99
 //================================================================
 
 //PLAYER AND CODE AUTHOR USERNAME
-  const player = {"x-client":"15d53bbe-a252-4f43-b401-94ddea74f7eb" + "-" + "Auto-Accept Quests for Emerald Dream",'x-api-user':user,'x-api-key':token};api=`https://habitica.com/api/v3`;q=api+"/groups/party/quests"
+  const player = {"x-client":"15d53bbe-a252-4f43-b401-94ddea74f7eb" + "-" + "Accept Quests for Emerald Dream",'x-api-user':user,'x-api-key':token};api=`https://habitica.com/api/v3`;q=api+"/groups/party/quests"
 
 //CREATE NEW HABITICA WEBHOOK QUEST INVITE
   function INSTALL_ONCE(){delHook();UrlFetchApp.fetch(`${api}/user/webhook`,{method:"post",headers:player,contentType:"application/json",payload:JSON.stringify({"url":deploy,label:'Emerald',"type":"questActivity","options":{"questInvited":true,...(warning_ended===1&&{"questFinished":true})}})})
