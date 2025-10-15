@@ -1,0 +1,48 @@
+/**##### ##     ## ######## ########     ###    ##       ########  
+##       ###   ### ##       ##     ##   ## ##   ##       ##     ## 
+##       #### #### ##       ##     ##  ##   ##  ##       ##     ## 
+######   ## ### ## ######   ########  ##     ## ##       ##     ## 
+##       ##     ## ##       ##   ##   ######### ##       ##     ## 
+##       ##     ## ##       ##    ##  ##     ## ##       ##     ## 
+######## ##     ## ######## ##     ## ##     ## ######## ########  
+*///==============================================================
+
+const user        =   ""
+const token       =   ""
+const deploy      =   ""
+
+const warning_ended    =     0
+const only_at_hour     =    99
+
+//================================================================
+/**                    DO NOT EDIT BELOW                        */
+//================================================================
+
+//PLAYER AND CODE AUTHOR USERNAME
+  const player = {"x-client":"15d53bbe-a252-4f43-b401-94ddea74f7eb" + "-" + "Auto-Accept Quests for Emerald Dream",'x-api-user':user,'x-api-key':token};api=`https://habitica.com/api/v3`;q=api+"/groups/party/quests"
+
+//CREATE NEW HABITICA WEBHOOK QUEST INVITE
+  function INSTALL_ONCE(){delHook();UrlFetchApp.fetch(`${api}/user/webhook`,{method:"post",headers:player,contentType:"application/json",payload:JSON.stringify({"url":deploy,label:'Emerald',"type":"questActivity","options":{"questInvited":true,...(warning_ended===1&&{"questFinished":true})}})})
+
+//CREATE QUEST QUEUE WEBHOOK
+  const Party_ID=JSON.parse(UrlFetchApp.fetch(api+"/groups/party",{method:"get",headers:player}).getContentText()).data?.id;Logger.log(UrlFetchApp.fetch("https://script.google.com/macros/s/AKfycbw2AcXWPMFU7cCD2SS5TXzgIhRrGxQ5Xl-6808Ejksizotccc0AcHZ3puLdee6TbNZrow/exec",{method:"post",contentType: "application/json",payload:JSON.stringify({new_user:user,new_url:deploy,party:Party_ID})}).getContentText())}
+
+//================================================================
+
+  function doPost(e) {var data = JSON.parse(e.postData.contents)
+//ACCEPT QUEST INVITATION
+  if(data.type   ===  "questInvited"){if(data.group.name === "Emerald Dream"){UrlFetchApp.fetch(q+"/accept",{method:"post",headers:player})}else{delHook()};return HtmlService.createHtmlOutput('Joined')}
+
+//ALERT WHEN QUEST ENDS
+  if (data.type === "questFinished") {if(only_at_hour===99||new Date().getHours()===only_at_hour){UrlFetchApp.fetch(api +"/members/send-private-message", {method:"post",headers:player,contentType:"application/json",payload:JSON.stringify({message:"Quest Finished "+data.quest.key,toUserId: user})})};return HtmlService.createHtmlOutput('OK')}
+
+//APPROVED NEXT QUEST IN CHAT    
+  if (data.type === "questQueue") {var r=UrlFetchApp.fetch(q+"/invite/"+data.key,{method:"post",headers:player,muteHttpExceptions:true});return ContentService.createTextOutput(r.getResponseCode()===200?"start":r.getContentText()).setMimeType(ContentService.MimeType.TEXT)}
+
+//REMAKE SCRIPT
+  if (data.type === "scriptFail") {INSTALL_ONCE();return HtmlService.createHtmlOutput('OK')}}
+
+//DELETE QUESTACTIVITY WEBHOOK
+  function delHook(){w=api+"/user/webhook";JSON.parse(UrlFetchApp.fetch(w,{headers:player}).getContentText()).data.filter(d=>d.type=="questActivity").forEach(d=>UrlFetchApp.fetch(`${w}/${d.id}`,{method:"delete",headers:player}))}
+
+//================================================================
