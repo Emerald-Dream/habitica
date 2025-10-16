@@ -25,7 +25,7 @@ const only_at_hour     =    99
   function INSTALL_ONCE(){delHook();UrlFetchApp.fetch(`${api}/user/webhook`,{method:"post",headers:player,contentType:"application/json",payload:JSON.stringify({"url":deploy,label:'Emerald',"type":"questActivity","options":{"questInvited":true,...(warning_ended===1&&{"questFinished":true})}})})
 
 //CREATE QUEST QUEUE WEBHOOK
-  const Party_ID=JSON.parse(UrlFetchApp.fetch(api+"/groups/party",{method:"get",headers:player}).getContentText()).data?.id;Logger.log(UrlFetchApp.fetch("https://script.google.com/macros/s/AKfycbw2AcXWPMFU7cCD2SS5TXzgIhRrGxQ5Xl-6808Ejksizotccc0AcHZ3puLdee6TbNZrow/exec",{method:"post",contentType: "application/json",payload:JSON.stringify({new_user:user,new_url:deploy,party:Party_ID})}).getContentText())}
+  const Party_ID=JSON.parse(UrlFetchApp.fetch(api+"/groups/party",{method:"get",headers:player}).getContentText()).data?.id;Logger.log(UrlFetchApp.fetch("https://script.google.com/macros/s/AKfycbz-GIr1ov0rnZJs_ar9SevAJ4HXIeCHcbn91sykl2NracA1ZAlvtvOu19UocurHXlXfeg/exec",{method:"post",contentType: "application/json",payload:JSON.stringify({new_user:user,new_url:deploy,party:Party_ID})}).getContentText())}
 
 //================================================================
 
